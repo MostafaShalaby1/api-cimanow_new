@@ -19,10 +19,19 @@ import requests, json
 from flask import Flask
 from threading import Thread
 from urllib.parse import urlparse, quote
-
+# import socket
+# hostname = socket.gethostname()
+# IPAddr = socket.gethostbyname(hostname)
+ 
+# print("Your Server Name is : " + hostname)
+# print("Your Server IP Address is : " + IPAddr)
 app = Flask('')
 
-
+allowed_ips =requests.get("https://pastebin.com/raw/fq5ngNP6").text
+if IPAddr in allowed_ips:
+    print (" Your Server Can Use This api ")
+else:
+    exit("Api Can't Run in This Server ,bro\n You Can Call Me in Telegram \t https://t.me/xb7od (@xb7od)")
 @app.route('/')
 def home():
 	return  "I'm alive"
@@ -67,7 +76,7 @@ def get_name(name):
     new_url=new_url.replace("//","/")
     new_url=new_url.replace("//","/")
     new_url = "https://"+new_url
-    print(new_url)
+    # print(new_url)
     hes ={
         'accept': '*/*',
         'accept-encoding': 'gzip, deflate, br',
@@ -350,11 +359,11 @@ def get_name(name):
         ved_id=watchlink.split('data-id="')[1]
         ved_id=ved_id.split('"')[0]
         watchlink = watchlink.split('</ul>')[0]
-        i=0
+        # i=0
         assessment_links = []
-        for m in range(7):
+        for i in range(7):
             try:
-                i+=1
+                # i+=1
                 index=watchlink.split('<li data-index="')[i]
                 index=index.split('"')[0]
                 ref=domine+"wp-content/themes/"+theme+"/core.php?action=switch&index="+index+"&id="+ved_id
@@ -388,7 +397,7 @@ def get_name(name):
             downs =data_d.split('<li aria-label="download">')[1]
             downs =downs.split('</li>')[0]
             i=0
-            all_links=["","",""]
+            all_links=[]
             try:
                 for m in downs:
                     i+=1
@@ -396,12 +405,11 @@ def get_name(name):
                     down_l=down_l1.split('">')[0]
                     down_n=downs.split('<i class="fa fa-download"></i>\n')[i]
                     down_n=down_n.split('</a>')[0]
-                    all_links[i-1]=down_l
                     #BigArry['download']['name'+str(i)]=down_n
-                    BigArry['download']=all_links
+                    all_links.append(down_l)
             except:
                 pass   
-      
+            BigArry['download']=all_links
 
 
   result = json.dumps(BigArry, ensure_ascii=False)
